@@ -29,23 +29,23 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
 
-    // Validação (Essencial para o requisito de "Validações na aplicação")
+    // Validação
     implementation("org.springframework.boot:spring-boot-starter-validation")
 
-    // Swagger/OpenAPI (Atende o requisito "Desejável")
+    // Swagger/OpenAPI
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.5")
 
     // Database
     runtimeOnly("org.postgresql:postgresql")
 
-    // Produtividade (Lombok)
+    // Lombok
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
 
     // Ferramentas de Desenvolvimento
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 
-    // Testes (Unificado e completo: JUnit 5, Mockito, AssertJ)
+    // Testes
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
