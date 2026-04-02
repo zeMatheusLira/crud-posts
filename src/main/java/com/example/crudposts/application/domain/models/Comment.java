@@ -1,11 +1,12 @@
 package com.example.crudposts.application.domain.models;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public record Comment(
-        Long id,
-        Long userId,
-        Long postId,
+        UUID id,
+        UUID userId,
+        UUID postId,
         String message,
         LocalDateTime createdAt,
         LocalDateTime updatedAt

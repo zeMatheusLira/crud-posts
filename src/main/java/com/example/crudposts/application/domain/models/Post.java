@@ -1,10 +1,11 @@
 package com.example.crudposts.application.domain.models;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public record Post(
-        Long id,
-        Long userId,
+        UUID id,
+        UUID userId,
         String text,
         boolean archived,
         LocalDateTime createdAt,

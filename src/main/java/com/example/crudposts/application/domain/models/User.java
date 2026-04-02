@@ -1,9 +1,10 @@
 package com.example.crudposts.application.domain.models;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public record User(
-        Long id,
+        UUID id,
         String username,
         String name,
         String email,
