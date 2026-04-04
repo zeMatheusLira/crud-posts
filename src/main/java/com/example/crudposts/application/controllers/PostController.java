@@ -1,7 +1,7 @@
 package com.example.crudposts.application.controllers;
 
-import com.example.crudposts.application.domain.models.Comment;
-import com.example.crudposts.application.domain.models.Post;
+import com.example.crudposts.domain.models.Comment;
+import com.example.crudposts.domain.models.Post;
 import com.example.crudposts.domain.services.CommentService;
 import com.example.crudposts.domain.services.PostService;
 import lombok.RequiredArgsConstructor;
@@ -44,6 +44,12 @@ public class PostController {
     @PatchMapping("/{id}/archive")
     public ResponseEntity<Void> archive(@PathVariable UUID id) {
         postService.archive(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/{id}/unarchive")
+    public ResponseEntity<Void> unarchive(@PathVariable UUID id) {
+        postService.unarchive(id);
         return ResponseEntity.ok().build();
     }
 

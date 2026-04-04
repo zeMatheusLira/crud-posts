@@ -1,0 +1,27 @@
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: crud-posts-db
+    environment:
+      POSTGRES_DB: crud_posts
+      POSTGRES_USER: user_starti
+      POSTGRES_PASSWORD: password_starti
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: crud-posts-app
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/crud_posts
+      - SPRING_DATASOURCE_USERNAME=user_starti
+      - SPRING_DATASOURCE_PASSWORD=password_starti
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:

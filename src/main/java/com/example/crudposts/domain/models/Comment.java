@@ -1,4 +1,4 @@
-package com.example.crudposts.application.domain.models;
+package com.example.crudposts.domain.models;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

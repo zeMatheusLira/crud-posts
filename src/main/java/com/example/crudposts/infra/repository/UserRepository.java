@@ -1,6 +1,6 @@
 package com.example.crudposts.infra.repository;
 
-import com.example.crudposts.infra.entities.UserEntity;
+import com.example.crudposts.domain.entities.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

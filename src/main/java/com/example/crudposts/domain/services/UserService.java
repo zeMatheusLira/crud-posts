@@ -1,7 +1,9 @@
 package com.example.crudposts.domain.services;
 
-import com.example.crudposts.application.domain.models.User;
-import com.example.crudposts.infra.mappers.UserPersistenceMapper;
+import com.example.crudposts.domain.models.User;
+import com.example.crudposts.exceptions.custom.BusinessException;
+import com.example.crudposts.exceptions.custom.EntityNotFoundException;
+import com.example.crudposts.domain.mappers.UserPersistenceMapper;
 import com.example.crudposts.infra.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,10 +22,10 @@ public class UserService {
     @Transactional
     public User create(User userDomain) {
         if (userRepository.existsByEmail(userDomain.email())) {
-            throw new RuntimeException("Erro de Integridade: E-mail já cadastrado.");
+            throw new BusinessException("Erro de Integridade: E-mail já cadastrado.");
         }
         if (userRepository.existsByUsername(userDomain.username())) {
-            throw new RuntimeException("Erro de Integridade: Nome de usuário já está em uso.");
+            throw new BusinessException("Erro de Integridade: Nome de usuário já está em uso.");
         }
 
         var entity = userMapper.toEntity(userDomain);
@@ -36,13 +38,13 @@ public class UserService {
     public User findById(UUID id) {
         return userRepository.findById(id)
                 .map(userMapper::toDomain)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado com o ID: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com o ID"));
     }
 
     @Transactional
     public User update(UUID id, User userUpdate) {
         var existingEntity = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado para atualização."));
+                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado para atualização."));
 
         existingEntity.setName(userUpdate.name());
         existingEntity.setBiography(userUpdate.biography());
@@ -54,7 +56,7 @@ public class UserService {
     @Transactional
     public void delete(UUID id) {
         if (!userRepository.existsById(id)) {
-            throw new RuntimeException("Falha ao deletar: Usuário inexistente.");
+            throw new EntityNotFoundException("Falha ao deletar: Usuário inexistente.");
         }
         userRepository.deleteById(id);
     }

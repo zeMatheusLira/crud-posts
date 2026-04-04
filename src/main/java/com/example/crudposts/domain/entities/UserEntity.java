@@ -1,4 +1,4 @@
-package com.example.crudposts.infra.entities;
+package com.example.crudposts.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,25 +9,31 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "posts")
+@Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostEntity {
+public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "user_id", nullable = false)
-    private UUID userId;
-
-    @Column(nullable = false, columnDefinition = "TEXT")
-    private String text;
+    @Column(unique = true, nullable = false)
+    private String username;
 
     @Column(nullable = false)
-    private boolean archived = false;
+    private String name;
+
+    @Column(unique = true, nullable = false)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(columnDefinition = "TEXT")
+    private String biography;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)

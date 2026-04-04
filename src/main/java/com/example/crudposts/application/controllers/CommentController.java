@@ -1,6 +1,6 @@
 package com.example.crudposts.application.controllers;
 
-import com.example.crudposts.application.domain.models.Comment;
+import com.example.crudposts.domain.models.Comment;
 import com.example.crudposts.domain.services.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

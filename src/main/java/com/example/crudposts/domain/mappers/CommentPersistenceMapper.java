@@ -1,7 +1,7 @@
-package com.example.crudposts.infra.mappers;
+package com.example.crudposts.domain.mappers;
 
-import com.example.crudposts.application.domain.models.Comment;
-import com.example.crudposts.infra.entities.CommentEntity;
+import com.example.crudposts.domain.models.Comment;
+import com.example.crudposts.domain.entities.CommentEntity;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -28,8 +28,8 @@ public class CommentPersistenceMapper {
                 entity.getUserId(),
                 entity.getPostId(),
                 entity.getMessage(),
-                entity.getCreatedAt(),
-                entity.getUpdatedAt()
+                entity.getCreatedAt() != null ? entity.getCreatedAt() : java.time.LocalDateTime.now(),
+                entity.getUpdatedAt() != null ? entity.getUpdatedAt() : java.time.LocalDateTime.now()
         );
     }
 }

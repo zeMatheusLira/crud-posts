@@ -1,7 +1,7 @@
-package com.example.crudposts.infra.mappers;
+package com.example.crudposts.domain.mappers;
 
-import com.example.crudposts.application.domain.models.User;
-import com.example.crudposts.infra.entities.UserEntity;
+import com.example.crudposts.domain.models.User;
+import com.example.crudposts.domain.entities.UserEntity;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -32,8 +32,8 @@ public class UserPersistenceMapper {
                 entity.getEmail(),
                 entity.getPassword(),
                 entity.getBiography(),
-                entity.getCreatedAt(),
-                entity.getUpdatedAt()
+                entity.getCreatedAt() != null ? entity.getCreatedAt() : java.time.LocalDateTime.now(),
+                entity.getUpdatedAt() != null ? entity.getUpdatedAt() : java.time.LocalDateTime.now()
         );
     }
 }

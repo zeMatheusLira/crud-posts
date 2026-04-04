@@ -1,8 +1,8 @@
 package com.example.crudposts.application.controllers;
 
-import com.example.crudposts.application.domain.models.Comment;
-import com.example.crudposts.application.domain.models.Post;
-import com.example.crudposts.application.domain.models.User;
+import com.example.crudposts.domain.models.Comment;
+import com.example.crudposts.domain.models.Post;
+import com.example.crudposts.domain.models.User;
 import com.example.crudposts.domain.services.CommentService;
 import com.example.crudposts.domain.services.PostService;
 import com.example.crudposts.domain.services.UserService;

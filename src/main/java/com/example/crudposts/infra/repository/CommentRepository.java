@@ -1,6 +1,6 @@
 package com.example.crudposts.infra.repository;
 
-import com.example.crudposts.infra.entities.CommentEntity;
+import com.example.crudposts.domain.entities.CommentEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
