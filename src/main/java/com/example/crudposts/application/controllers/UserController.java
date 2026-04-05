@@ -1,11 +1,15 @@
 package com.example.crudposts.application.controllers;
 
+import com.example.crudposts.domain.mappers.UserWebMapper;
 import com.example.crudposts.domain.models.Comment;
 import com.example.crudposts.domain.models.Post;
 import com.example.crudposts.domain.models.User;
+import com.example.crudposts.domain.models.dtos.UserRequestDTO;
+import com.example.crudposts.domain.models.dtos.UserResponseDTO;
 import com.example.crudposts.domain.services.CommentService;
 import com.example.crudposts.domain.services.PostService;
 import com.example.crudposts.domain.services.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,20 +26,26 @@ public class UserController {
     private final UserService userService;
     private final PostService postService;
     private final CommentService commentService;
+    private final UserWebMapper webMapper;
 
     @PostMapping
-    public ResponseEntity<User> create(@RequestBody User user) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.create(user));
+    public ResponseEntity<UserResponseDTO> create(@RequestBody @Valid UserRequestDTO request) {
+        User domain = webMapper.toDomain(request);
+        User savedUser = userService.create(domain);
+        return ResponseEntity.status(HttpStatus.CREATED).body(webMapper.toResponse(savedUser));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> findById(@PathVariable UUID id) {
-        return ResponseEntity.ok(userService.findById(id));
+    public ResponseEntity<UserResponseDTO> findById(@PathVariable UUID id) {
+        User user = userService.findById(id);
+        return ResponseEntity.ok(webMapper.toResponse(user));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> update(@PathVariable UUID id, @RequestBody User user) {
-        return ResponseEntity.ok(userService.update(id, user));
+    public ResponseEntity<UserResponseDTO> update(@PathVariable UUID id, @RequestBody @Valid UserRequestDTO request) {
+        User domain = webMapper.toDomain(request);
+        User updatedUser = userService.update(id, domain);
+        return ResponseEntity.ok(webMapper.toResponse(updatedUser));
     }
 
     @DeleteMapping("/{id}")
