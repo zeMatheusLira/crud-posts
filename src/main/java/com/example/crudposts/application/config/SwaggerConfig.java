@@ -12,7 +12,7 @@ public class SwaggerConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Starti 2026 - API de Publicações")
+                        .title("API de Publicações")
                         .version("1.0")
                         .description("API REST para o sistema simplificado de publicações e comentários."));
     }
