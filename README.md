@@ -131,3 +131,96 @@ Caso opte por executar a aplicação fora do ambiente Docker (via IDE), utilize 
 * `./gradlew bootRun`: Inicia o servidor de desenvolvimento localmente.
 * `./gradlew test`: Executa a suíte completa de testes unitários e de integração.
 * `./gradlew bootJar`: Compila e gera o arquivo executável otimizado (`.jar`) no diretório `build/libs/`.
+
+##  Exemplos de Testes (cURL)
+
+Para testar a API via terminal, utilize os comandos abaixo. Lembre-se de substituir `{id}` pelo UUID real gerado pelo sistema.
+
+###  Usuários (`/users`)
+
+**Criar Usuário:**
+```bash
+curl -X POST http://localhost:8080/users -H "Content-Type: application/json" -d '{"username": "zematheus", "name": "José Matheus", "email": "jose@teste.com", "password": "123", "biography": "Backend Engineer"}'
+```
+**Buscar por ID:**
+```bash
+curl -X GET http://localhost:8080/users/{id}
+```
+**Atualizar Usuário:**
+```bash
+curl -X PUT http://localhost:8080/users/{id} -H "Content-Type: application/json" -d '{"username": "zematheus_dev", "name": "José M. Atualizado", "email": "jose_novo@teste.com", "password": "456", "biography": "Java 25 Dev"}'
+```
+**Deletar Usuário:**
+```bash
+curl -X DELETE http://localhost:8080/users/{id}
+```
+**Listar Posts Públicos do Usuário:**
+```bash
+curl -X GET http://localhost:8080/users/{id}/posts
+```
+**Listar Comentários do Usuário em Posts Públicos:**
+```bash
+curl -X GET http://localhost:8080/users/{id}/comments
+```
+
+###  Posts (`/posts`)
+
+**Criar Publicação:**
+
+```bash
+curl -X POST http://localhost:8080/posts -H "Content-Type: application/json" -d '{"userId": "{user_id}", "text": "Olá mundo!", "archived": false}'
+```
+**Buscar Publicação por ID:**
+
+```bash
+curl -X GET http://localhost:8080/posts/{id}
+```
+**Atualizar Publicação:**
+
+```bash
+curl -X PUT http://localhost:8080/posts/{id} -H "Content-Type: application/json" -d '{"text": "Conteúdo atualizado", "archived": false}'
+```
+**Deletar Publicação:**
+
+```bash
+curl -X DELETE http://localhost:8080/posts/{id}
+```
+
+**Arquivar Publicação:**
+
+```bash
+curl -X PATCH http://localhost:8080/posts/{id}/archive
+```
+
+**Desarquivar Publicação:**
+
+```bash
+curl -X PATCH http://localhost:8080/posts/{id}/unarchive
+```
+
+**Listar Comentários de um Post:**
+
+```bash
+curl -X GET http://localhost:8080/posts/{id}/comments
+```
+
+###  Comments (`/comments`)
+
+
+**Criar Comentário:**
+
+```bash
+curl -X POST http://localhost:8080/comments -H "Content-Type: application/json" -d '{"userId": "{user_id}", "postId": "{post_id}", "message": "Excelente post!"}'
+```
+
+**Atualizar Comentário:**
+
+```bash
+curl -X PUT http://localhost:8080/comments/{id} -H "Content-Type: application/json" -d '{"message": "Comentário editado"}'
+```
+
+**Deletar Comentário:**
+
+```bash
+curl -X DELETE http://localhost:8080/comments/{id}
+```
