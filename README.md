@@ -224,3 +224,164 @@ curl -X PUT http://localhost:8080/comments/{id} -H "Content-Type: application/js
 ```bash
 curl -X DELETE http://localhost:8080/comments/{id}
 ```
+
+# Demonstrações de uso dos principais endpoints
+
+## 1. 🚀 Fluxo de Onboarding (Usuário e Post)
+
+Neste fluxo, registramos um novo perfil e criamos o primeiro conteúdo.  
+A senha é enviada no cadastro, mas **nunca retornada na resposta**.
+
+---
+
+### 👤 A. Criar um Novo Usuário
+
+**Endpoint:** `POST /users`  
+
+**Descrição:** Registra um usuário e valida unicidade de e-mail/username.
+
+#### 🔧 Chamada cURL
+
+```bash
+curl -X POST http://localhost:8080/users \
+-H "Content-Type: application/json" \
+-d '{
+  "username": "zematheus",
+  "name": "José Matheus",
+  "email": "jose@teste.com",
+  "password": "senha_secreta_123",
+  "biography": "Software Engineer focado em Java"
+}'
+```
+
+#### ✅ Resposta (201 Created)
+
+```json
+{
+  "id": "550e8400-e29b-41d4-a716-446655440000",
+  "username": "zematheus",
+  "name": "José Matheus",
+  "email": "jose@teste.com",
+  "biography": "Software Engineer focado em Java"
+}
+```
+
+> 🔐 **Nota de Segurança:** O campo `password` é filtrado pelo `UserWebMapper` e não aparece no JSON.
+
+---
+
+### 📝 B. Criar uma Publicação (Post)
+
+**Endpoint:** `POST /posts`  
+
+**Descrição:** Vincula um novo texto ao ID do usuário criado.
+
+#### 🔧 Chamada cURL
+
+```bash
+curl -X POST http://localhost:8080/posts \
+-H "Content-Type: application/json" \
+-d '{
+  "userId": "550e8400-e29b-41d4-a716-446655440000",
+  "text": "Explorando os benefícios da Arquitetura....,
+  "archived": false
+}'
+```
+
+---
+
+## 2. ⚠️ Validação de Regra de Negócio (Post Arquivado)
+
+A API impede interações em conteúdos que não estão mais ativos.
+
+---
+
+### 🚫 Cenário: Tentativa de Comentário em Post Arquivado
+
+#### 🔄 Arquivar Post
+
+**Endpoint:** `PATCH /posts/{id}/archive`
+
+---
+
+### 💬 Tentativa de Comentário
+
+**Endpoint:** `POST /comments`
+
+#### 📥 Payload
+
+```json
+{
+  "userId": "uuid-do-comentador",
+  "postId": "550e8400-e29b-41d4-a716-446655440000",
+  "message": "Excelente reflexão!"
+}
+```
+
+#### ❌ Resposta de Erro (400 Bad Request)
+
+```json
+{
+  "timestamp": "2026-04-04T23:45:12Z",
+  "status": 400,
+  "error": "Bad Request",
+  "message": "Não é permitido adicionar comentários em publicações arquivadas.",
+  "path": "/comments"
+}
+```
+
+---
+
+## 3. 🔎 Consultas de Interação Social
+
+Endpoints otimizados para recuperar o grafo de interações entre usuários.
+
+---
+
+### 💬 Listar Comentários de uma Publicação
+
+**Endpoint:** `GET /posts/{id}/comments`
+
+#### ✅ Resposta Esperada
+
+```json
+[
+  {
+    "id": "uuid-comment-1",
+    "userId": "uuid-user-x",
+    "message": "Muito bom esse artigo!",
+    "createdAt": "2026-04-04T20:00:00Z"
+  },
+  {
+    "id": "uuid-comment-2",
+    "userId": "uuid-user-y",
+    "message": "Concordo com os pontos levantados.",
+    "createdAt": "2026-04-04T21:15:00Z"
+  }
+]
+```
+
+---
+
+## 4. 📛 Tratamento de Erros Padronizado (RFC 7807)
+
+Qualquer falha de busca ou regra de negócio retorna um objeto padronizado  
+para facilitar o tratamento no Front-end.
+
+---
+
+### ❌ Exemplo: Buscar Usuário Inexistente
+
+**Endpoint:** `GET /users/00000000-0000-0000-0000-000000000000`
+
+#### 🚫 Resposta (404 Not Found)
+
+```json
+{
+  "timestamp": "2026-04-04T23:50:00Z",
+  "status": 404,
+  "error": "Not Found",
+  "message": "Usuário não encontrado com o ID fornecido.",
+  "path": "/users/00000000..."
+}
+```
